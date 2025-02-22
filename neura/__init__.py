@@ -1,6 +1,7 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, g
 from uuid import uuid4
+from .auth import login_required
 
 
 def create_app():
@@ -13,7 +14,9 @@ def create_app():
 
 
     @app.route('/')
+    @login_required
     def home():
+
         return render_template('home.html')
 
     from . import db, auth

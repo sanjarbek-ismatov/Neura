@@ -4,12 +4,83 @@
   <h1>{% block title %}Register{% endblock %}</h1>
 {% endblock %}
 
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .auth-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+    }
+    .form-floating input {
+        border-radius: 8px;
+    }
+    .btn-custom {
+        background: #764ba2;
+        color: white;
+        transition: all 0.3s ease;
+    }
+    .btn-custom:hover {
+        background: #5a3b8a;
+    }
+
+    .cmd-center {
+        margin-left: 50% !important;
+    }
+</style>
+<script>
+    // Bootstrap 5 form validation
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+
 {% block content %}
-  <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Register">
-  </form>
+<div class="auth-container mt-5">
+    <h2 class="text-center mb-4">Login / Register</h2>
+
+    <form action="{{ url_for('auth.register') }}" method="POST" class="needs-validation" novalidate>
+       <div class="row justify-content-center">
+        <div class="col col-6">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                <label for="username">Username</label>
+                <div class="invalid-feedback">Please enter your username.</div>
+            </div>
+        </div>
+        <div class="col-12"></div>
+        <div class="col col-6">
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                <label for="password">Password</label>
+                <div class="invalid-feedback">Password must be at least 6 characters.</div>
+            </div>
+        </div>
+        <div class="col-12"></div>
+        <div class="col-6">
+            <button type="submit" class="btn btn-primary w-100">Enter</button>
+        </div>
+       </div>
+        
+        
+    </form>
+</div>
 {% endblock %}
