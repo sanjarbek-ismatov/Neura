@@ -2,44 +2,50 @@
 
 {% block content %}
 <div class="row vh-100">
-    <!-- Sidebar (Chat History) -->
-    <div class="col-md-3 col-12 bg-light p-3 border-end">
-        <h5 class="mb-3">Chat History</h5>
-        <ul class="list-group list-group-flush overflow-auto" style="max-height: 85vh;">
-            {% for chat in chats %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="{{ url_for('chat.view', chat_id=chat.id) }}" class="text-decoration-none">
-                    {{ chat.summary_title }}
-                </a>
-                <button class="btn btn-sm btn-outline-danger" onclick="deleteChat({{ chat.id }})">🗑</button>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
+    <h1>{{ g.user['username']}}</h1>
+    <!-- Center Section (Start New Chat) -->
+    <div class="col-md-12 col-12 d-flex flex-column align-items-center justify-content-center text-center">
+        <h2 class="mb-3">Start a New Chat</h2>
+        <p class="text-muted">Click the button below to start a conversation with your AI assistant.</p>
+        <a href="{{ url_for('chat.create_chat') }}">Go to Chat</a>
 
-    <!-- Chat Input Section -->
-    <div class="col-md-9 col-12 d-flex flex-column align-items-center justify-content-center p-4">
-        <h2 class="mb-4">Ask Your AI</h2>
-        <form action="" method="POST" class="w-75">
-            <div class="input-group">
-                <input type="text" class="form-control" name="user_input" placeholder="Type your message..." required>
-                <button class="btn btn-primary">Send</button>
-            </div>
-        </form>
+    </div>
+    
+    <!-- Chat History Table -->
+    <div class="col-12 mt-4 px-5">
+        <h3 class="mb-3">Chat History</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Chat Title</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chat_obj in history() %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><a href="{{ url_for('chat.chat_view', chat_id=chat_obj.id) }}">{{ chat_obj.summary_title }}</a></td>
+                        <td>{{ chat_obj.created }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="deleteChat({{ chat_obj.id }})">🗑 Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-
-<!-- JavaScript for deleting chat history -->
 <script>
-function deleteChat(chatId) {
-    if (confirm("Are you sure you want to delete this chat?")) {
-        fetch(`/chat/delete/${chatId}`, { method: "POST" })
-            .then(() => location.reload());
+    function deleteChat(chatId) {
+        if (confirm("Are you sure you want to delete this chat?")) {
+            fetch(`/chat/delete/${chatId}`, { method: "POST" })
+                .then(() => location.reload());
+        }
     }
-}
 </script>
-
-
-
 {% endblock %}
