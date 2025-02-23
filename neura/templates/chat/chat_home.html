@@ -4,9 +4,9 @@
 <div class="container-fluid vh-100 d-flex flex-column">
     <!-- Chat Messages Area -->
     <div class="flex-grow-1 overflow-auto p-4" id="chat-box">
-        {% for message in messages %}
+        {% for q in queries %}
         <div class="mb-2">
-            <strong>{{ message.sender }}:</strong> {{ message.content }}
+            {{ q.msg }}
         </div>
         {% endfor %}
     </div>
